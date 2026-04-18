@@ -1,0 +1,230 @@
+/* ===== GLOBAL ===== */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ===== NAVBAR GRADIENT ===== */
+.navbar.navbar-custom {
+    background: linear-gradient(
+        135deg,
+        #2e7d32,
+        #1b5e20
+    ) !important;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+/* Saat scroll */
+.navbar.navbar-custom.scrolled {
+    background: linear-gradient(
+        135deg,
+        #1b5e20,
+        #0f3d14
+    ) !important;
+
+    backdrop-filter: blur(6px);
+}
+
+
+/* Brand */
+.navbar-brand {
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+/* Menu */
+.nav-link {
+    color: rgba(255, 255, 255, 0.85) !important;
+    transition: 0.2s;
+}
+
+.nav-link:hover {
+    color: #c8e6c9 !important; /* Hijau muda */
+}
+
+.hero {
+    height: 100vh;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(46, 125, 50, 0.85),
+            rgba(27, 94, 32, 0.85)
+        ),
+        url("https://images.unsplash.com/photo-1501004318641-b39e6451bec6");
+
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+
+
+/* Judul */
+.hero h1 {
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== FOOTER ===== */
+footer {
+    background-color: #1b1b1b;
+}
+
+/* ===== CALENDAR ===== */
+.calendar {
+    max-width: 600px;
+}
+
+.calendar-header,
+.calendar-body {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.calendar-header div {
+    font-weight: bold;
+}
+
+.day {
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    margin: 5px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+/* Tersedia */
+.day.available {
+    background-color: #4caf50;
+    color: #fff;
+    cursor: pointer;
+}
+
+.day.available:hover {
+    background-color: #2e7d32;
+}
+
+/* Penuh */
+.day.full {
+    background-color: #dc3545;
+    color: #fff;
+    cursor: not-allowed;
+}
+
+/* Disabled */
+.day.disabled {
+    background-color: #6c757d;
+    color: #fff;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+/* ===== HERO TEXT EFFECT ===== */
+.hero h1 {
+    text-shadow: 0 5px 20px rgba(0, 0, 0, 0.35);
+}
+
+.hero p {
+    opacity: 0.9;
+}
+
+/* ===== BUTTON MODERN ===== */
+.btn-success {
+    background: linear-gradient(135deg, #4caf50, #2e7d32);
+    border: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+/* ===== HERO ===== */
+.hero-section {
+    height: 100vh;
+    background:
+        linear-gradient(
+            rgba(129, 199, 132, 0.6),  /* Hijau muda */
+            rgba(46, 125, 50, 0.7)     /* Hijau tua */
+        ),
+        url('/assets/img/bg.jpg');
+
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+/* ===== TOP BAR ===== */
+.top-bar {
+    background: rgba(0, 0, 0, 0.35);
+    color: white;
+    font-size: 14px;
+    padding: 8px 0;
+}
+
+/* ===== NAVBAR ===== */
+.navbar-custom {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.navbar-custom .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    margin: 0 12px;
+    position: relative;
+}
+
+.navbar-custom .nav-link:hover {
+    color: #c8e6c9 !important;
+}
+
+/* Active underline */
+.navbar-custom .nav-link.active::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: #4caf50;
+    bottom: -6px;
+    left: 0;
+}
+
+/* ===== HERO CONTENT ===== */
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.hero-content h1 {
+    font-size: 48px;
+    font-weight: bold;
+    text-shadow: 0 5px 25px rgba(0,0,0,0.35);
+}
+
+.hero-content p {
+    font-size: 18px;
+    opacity: 0.95;
+}
+.hero-content p {
+    font-size: 18px;
+    opacity: 0.95;
+    margin-top: 10px;
+}
+
+.icon-box {
+    width: 55px;
+    height: 55px;
+    margin: auto;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+
