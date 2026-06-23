@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\KontakPesan; // Pastikan model ini sudah dibuat
+use App\Models\KontakPesan;
 use Illuminate\Http\Request;
 
 class KontakPesanController extends Controller

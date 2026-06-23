@@ -11,6 +11,13 @@ class Kemitraan extends Model
 
     protected $table = 'kemitraan';
 
-    // Mengizinkan semua kolom diisi (Mass Assignment)
-    protected $guarded = [];
+    protected $fillable = [
+        'nama_perwakilan',
+        'nama_instansi',
+        'no_wa',
+        'email',
+        'deskripsi',
+        'proposal_path',
+        'status'
+    ];
 }

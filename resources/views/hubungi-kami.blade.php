@@ -1,226 +1,183 @@
 @extends('layouts.frontend')
 
 @section('content')
+@php
+    $themeColor = \App\Models\Setting::where('key', 'theme_color')->value('value') ?? '#198754';
+@endphp
+
 <style>
-    /* --- ANIMASI SMOOTH --- */
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+    :root { 
+        --gs-green: {{ $themeColor }}; 
+        --gs-dark: #0a1f13; 
+        --gs-light: #f8fafc;
     }
 
-    .animate-fade { animation: fadeIn 0.8s ease-out forwards; }
-
-    /* --- HERO DENGAN GRADASI & BLUR --- */
+    /* --- HERO SECTION --- */
     .contact-hero {
-        background: linear-gradient(135deg, #1a4d2e 0%, #2d6a4f 50%, #52b788 100%);
-        padding: 120px 0;
+        background: linear-gradient(135deg, var(--gs-dark) 0%, #111 100%);
+        padding: 100px 0 160px;
         color: white;
-        text-align: center;
-        border-bottom-right-radius: 150px;
         position: relative;
         overflow: hidden;
     }
 
-    /* Aksesoris Lingkaran Estetik */
-    .hero-circle {
-        position: absolute;
-        width: 300px;
-        height: 300px;
-        background: rgba(255,255,255,0.05);
-        border-radius: 50%;
-        top: -100px;
-        right: -50px;
+    .contact-hero::before {
+        content: ''; position: absolute; inset: 0;
+        background-image: radial-gradient(circle at 70% 30%, rgba(25,135,84,0.15) 0%, transparent 70%);
     }
 
-    .contact-hero h1 {
-        font-size: 4rem;
-        font-weight: 800;
-        letter-spacing: -3px;
-        text-transform: lowercase;
-        margin-bottom: 20px;
+    .gs-headline { 
+        font-weight: 900; font-size: clamp(3rem, 6vw, 5rem); letter-spacing: -3px; 
+        line-height: 0.9; text-transform: lowercase;
     }
 
-    /* --- CONTENT SECTION --- */
-    .contact-body {
-        margin-top: -80px; /* Narik konten ke atas hero */
-        padding-bottom: 100px;
-        background: #fdfdfd;
-    }
+    /* --- MAIN CONTENT --- */
+    .contact-wrapper { margin-top: -100px; position: relative; z-index: 20; padding-bottom: 100px; }
 
-    /* INFO CARDS - Glassmorphism Style */
-    .info-card {
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(10px);
-        padding: 40px;
-        border-radius: 40px;
-        border: 1px solid rgba(255,255,255,0.3);
-        box-shadow: 0 25px 50px rgba(0,0,0,0.05);
-        text-align: center;
-        transition: 0.4s;
-        height: 100%;
-    }
-
-    .info-card:hover { transform: translateY(-15px); box-shadow: 0 30px 60px rgba(26, 77, 46, 0.1); }
-
-    .icon-wrapper {
-        width: 80px;
-        height: 80px;
-        background: linear-gradient(135deg, #1a4d2e, #52b788);
-        color: white;
-        border-radius: 25px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.8rem;
-        margin: 0 auto 25px;
-        box-shadow: 0 10px 20px rgba(26, 77, 46, 0.2);
-    }
-
-    /* FORM CARD - Clean & Elegant */
-    .form-wrapper {
+    .main-card {
         background: white;
-        padding: 60px;
-        border-radius: 50px;
-        box-shadow: 0 30px 70px rgba(0,0,0,0.07);
-        border: 1px solid #f0f0f0;
-    }
-
-    .form-label {
-        font-weight: 700;
-        color: #1a4d2e;
-        margin-bottom: 12px;
-        font-size: 0.9rem;
-        text-transform: lowercase;
-    }
-
-    .custom-input {
-        background: #f8faf9;
-        border: 2px solid transparent;
-        padding: 16px 25px;
-        border-radius: 20px;
-        transition: 0.3s;
-    }
-
-    .custom-input:focus {
-        background: white;
-        border-color: #1a4d2e;
-        box-shadow: 0 10px 20px rgba(26, 77, 46, 0.05);
-        outline: none;
-    }
-
-    .btn-gradient {
-        background: linear-gradient(135deg, #1a4d2e, #2d6a4f);
-        color: white;
-        border: none;
-        padding: 18px;
-        border-radius: 20px;
-        font-weight: 800;
-        width: 100%;
-        text-transform: lowercase;
-        letter-spacing: 1px;
-        transition: 0.4s;
-        margin-top: 20px;
-    }
-
-    .btn-gradient:hover {
-        transform: scale(1.02);
-        box-shadow: 0 15px 30px rgba(26, 77, 46, 0.3);
-        color: white;
-    }
-
-    /* MAPS SECTION */
-    .map-frame {
-        margin-top: 80px;
         border-radius: 50px;
         overflow: hidden;
-        border: 15px solid white;
-        box-shadow: 0 40px 80px rgba(0,0,0,0.1);
+        box-shadow: 0 50px 100px rgba(0,0,0,0.08);
+        border: 1px solid #f1f5f9;
+    }
+
+    /* Left Panel: Info & Map */
+    .info-side { background: #f8fafc; padding: 60px; }
+    
+    .contact-item {
+        display: flex; gap: 20px; align-items: flex-start; margin-bottom: 40px;
+    }
+    
+    .icon-box {
+        width: 54px; height: 54px; background: white; border-radius: 18px;
+        display: flex; align-items: center; justify-content: center;
+        color: var(--gs-green); font-size: 1.4rem; box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+        flex-shrink: 0;
+    }
+
+    .info-text h6 { font-weight: 800; text-transform: lowercase; margin-bottom: 5px; color: var(--gs-dark); }
+    .info-text p { color: #64748b; font-size: 0.95rem; margin-bottom: 0; line-height: 1.6; }
+
+    .mini-map {
+        border-radius: 30px; overflow: hidden; border: 8px solid white;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.05); margin-top: 20px;
+    }
+
+    /* Right Panel: Form */
+    .form-side { padding: 60px; }
+    
+    .form-label-gs {
+        font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 1px; color: #94a3b8; margin-bottom: 10px; display: block;
+    }
+
+    .input-gs {
+        width: 100%; background: #f1f5f9; border: 2px solid transparent;
+        border-radius: 18px; padding: 16px 22px; transition: 0.3s;
+        font-weight: 500; color: var(--gs-dark);
+    }
+
+    .input-gs:focus {
+        background: white; border-color: var(--gs-green); outline: none;
+        box-shadow: 0 10px 20px rgba(25, 135, 84, 0.05);
+    }
+
+    .btn-gs-submit {
+        background: var(--gs-green); color: white; border: none;
+        width: 100%; padding: 20px; border-radius: 20px; font-weight: 900;
+        text-transform: lowercase; font-size: 1.1rem; transition: 0.4s;
+        box-shadow: 0 20px 40px rgba(25, 135, 84, 0.2);
+    }
+
+    .btn-gs-submit:hover { transform: translateY(-5px); box-shadow: 0 25px 50px rgba(25, 135, 84, 0.3); }
+
+    @media (max-width: 992px) {
+        .info-side, .form-side { padding: 40px; }
+        .gs-headline { font-size: 3.5rem; }
     }
 </style>
 
 <section class="contact-hero">
-    <div class="hero-circle"></div>
-    <div class="container animate-fade">
-        <h1>say hello.</h1>
-        <p>kami senang mendengar masukkan beserta kritik dan saran dari kamu.</p>
+    <div class="container text-center">
+        <h1 class="gs-headline mb-4" data-aos="fade-up">hubungi kami.</h1>
+        <p class="opacity-50 fs-5" data-aos="fade-up" data-aos-delay="100">kami siap mendengar ide, kritik, dan saran kolaborasi anda.</p>
     </div>
 </section>
 
-<section class="contact-body">
-    <div class="container">
-        @if(session('success'))
-        <div class="alert alert-success border-0 shadow-sm rounded-pill py-3 px-5 mb-5 animate-fade" style="background: #e9f7ef; color: #1a4d2e;">
-            <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
-        </div>
-        @endif
-
-        <div class="row g-4 justify-content-center">
-            <div class="col-md-4 animate-fade" style="animation-delay: 0.2s;">
-                <div class="info-card">
-                    <div class="icon-wrapper"><i class="fas fa-map-marked-alt"></i></div>
-                    <h4 class="fw-800">lokasi kami.</h4>
-                    <p>dusun krajan, desa kedawung, kec. padang, lumajang.</p>
-                </div>
-            </div>
-            <div class="col-md-4 animate-fade" style="animation-delay: 0.4s;">
-                <div class="info-card">
-                    <div class="icon-wrapper"><i class="fas fa-headset"></i></div>
-                    <h4 class="fw-800">kontak aktif.</h4>
-                    <p>whatsapp: +62 341 426235<br>email: halo@gubuksayur.com</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mt-5 justify-content-center">
-            <div class="col-lg-10 animate-fade" style="animation-delay: 0.6s;">
-                <div class="form-wrapper">
-                    <div class="text-center mb-5">
-                        <h2 class="fw-800 text-lowercase" style="color: #1a4d2e;">kirim pesan.</h2>
-                        <p class="text-muted">Silahkan sampaikan kritik dan saran Anda.</p>
+<div class="container contact-wrapper">
+    <div class="main-card" data-aos="zoom-in">
+        <div class="row g-0">
+            
+            <!-- PANEL KIRI: INFORMASI -->
+            <div class="col-lg-5 info-side">
+                <div class="contact-item">
+                    <div class="icon-box"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="info-text">
+                        <h6>lokasi kebun</h6>
+                        <p>dusun krajan, desa kedawung,<br>kec. padang, lumajang.</p>
                     </div>
-
-                    <form action="{{ route('kontak.store') }}" method="POST">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label">nama lengkap</label>
-                                <input type="text" name="nama" class="form-control custom-input" placeholder="siapa namamu?" required>
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label">nomor hp / wa</label>
-                                <input type="text" name="no_hp" class="form-control custom-input" placeholder="08..." required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label">alamat email</label>
-                                <input type="email" name="email" class="form-control custom-input" placeholder="contoh@mail.com" required>
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label">asal alamat</label>
-                                <input type="text" name="alamat" class="form-control custom-input" placeholder="kota tempat tinggal" required>
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label">isi pesan</label>
-                            <textarea name="pesan" rows="5" class="form-control custom-input" style="border-radius: 25px;" placeholder="tuliskan sesuatu yang ingin kamu sampaikan..." required></textarea>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-gradient">
-                                <i class="fas fa-paper-plane me-2"></i> kirim pesan sekarang
-                            </button>
-                        </div>
-                    </form>
                 </div>
 
-                <div class="map-frame">
+                <div class="contact-item">
+                    <div class="icon-box"><i class="fas fa-phone-alt"></i></div>
+                    <div class="info-text">
+                        <h6>kontak aktif</h6>
+                        <p>whatsapp: +62 812 1721 4839<br>email: halo@gubuksayur.com</p>
+                    </div>
+                </div>
+
+                <div class="mini-map">
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15796.86431940902!2d113.206634!3d-8.123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwMDcnMjQuNCJTIDExM8KwMTInMjMuOSJF!5e0!3m2!1sid!2sid!4v1711850000000!5m2!1sid!2sid" 
-                        width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy">
+                        width="100%" height="280" style="border:0;" allowfullscreen="" loading="lazy">
                     </iframe>
                 </div>
             </div>
+
+            <!-- PANEL KANAN: FORM -->
+            <div class="col-lg-7 form-side">
+                @if(session('success'))
+                    <div class="alert alert-success border-0 rounded-4 p-3 mb-4 shadow-sm">
+                        <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+                    </div>
+                @endif
+
+                <form action="{{ route('kontak.store') }}" method="POST">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label-gs">nama lengkap</label>
+                            <input type="text" name="nama" class="input-gs" placeholder="siapa namamu?" required>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label-gs">nomor whatsapp</label>
+                            <input type="text" name="no_hp" class="input-gs" placeholder="0812..." required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label-gs">alamat email</label>
+                        <input type="email" name="email" class="input-gs" placeholder="email@contoh.com" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label-gs">asal kota</label>
+                        <input type="text" name="alamat" class="input-gs" placeholder="contoh: malang / lumajang" required>
+                    </div>
+
+                    <div class="mb-5">
+                        <label class="form-label-gs">isi pesan</label>
+                        <textarea name="pesan" rows="4" class="input-gs" placeholder="tuliskan pesan atau pertanyaan anda disini..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-gs-submit">
+                        kirim pesan sekarang <i class="fas fa-paper-plane ms-2"></i>
+                    </button>
+                </form>
+            </div>
+
         </div>
     </div>
-</section>
+</div>
 @endsection

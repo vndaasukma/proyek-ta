@@ -27,6 +27,7 @@
                         <tr>
                             <th>Gambar</th>
                             <th>Nama Pelatihan</th>
+                            <th>Tanggal</th> 
                             <th>Harga</th>
                             <th>Kuota</th>
                             <th>Status</th>
@@ -44,6 +45,13 @@
                                 @endif
                             </td>
                             <td><strong>{{ $p->nama_pelatihan }}</strong></td>
+                            <!-- MENAMPILKAN TANGGAL PELATIHAN -->
+                            <td>
+                                <span class="badge bg-primary px-2 py-1">
+                                    <i class="fas fa-calendar-alt me-1"></i>
+                                    {{ $p->tanggal_pelatihan ? \Carbon\Carbon::parse($p->tanggal_pelatihan)->format('d/m/Y') : '-' }}
+                                </span>
+                            </td>
                             <td>Rp {{ number_format($p->harga, 0, ',', '.') }}</td>
                             <td>{{ $p->kuota }} Peserta</td>
                             <td>
@@ -73,7 +81,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="text-center text-muted py-4">Belum ada data pelatihan yang tersedia.</td>
+                            <td colspan="7" class="text-center text-muted py-4">Belum ada data pelatihan yang tersedia.</td>
                         </tr>
                         @endforelse
                     </tbody>

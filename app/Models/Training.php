@@ -14,6 +14,21 @@ class Training extends Model
         'description',
         'price',
         'quota',
-        'status'
+        'status',
+        'image',             
+        'tanggal_pelatihan', 
+        'id_pelatih'         
     ];
+
+    // Relasi untuk menghitung kuota terisi secara otomatis
+    public function registrations()
+    {
+        return $this->hasMany(PendaftaranPelatihan::class, 'training_id');
+    }
+
+    // Relasi ke User/Pelatih agar tombol WA dinamis
+    public function coach()
+    {
+        return $this->belongsTo(User::class, 'id_pelatih');
+    }
 }

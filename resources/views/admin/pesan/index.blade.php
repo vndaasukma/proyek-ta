@@ -81,7 +81,6 @@
 </div>
 
 <style>
-    /* Styling tambahan agar tabel lebih cantik */
     .table thead th { border-bottom: none; }
     .table tbody td { border-bottom: 1px solid #f8f9fa; padding-top: 15px; padding-bottom: 15px; }
     .btn-outline-danger:hover { background-color: #dc3545; color: white; }

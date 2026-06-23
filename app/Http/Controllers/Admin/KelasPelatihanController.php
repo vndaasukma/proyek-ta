@@ -7,6 +7,9 @@ use App\Models\KelasPelatihan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @author
+ */
 class KelasPelatihanController extends Controller
 {
     public function index()
@@ -23,25 +26,43 @@ class KelasPelatihanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_pelatihan' => 'required',
-            'deskripsi'      => 'nullable',
-            'harga'          => 'required|numeric',
-            'kuota'          => 'required|numeric',
-            'status'         => 'required|in:open,closed',
-            'gambar'         => 'nullable|image|mimes:jpeg,png,jpg|max:2048', 
+            'nama_pelatihan'        => 'required|string|max:255',
+            'deskripsi'             => 'required',
+            'ketentuan'             => 'required',
+            'tanggal_pelatihan'     => 'required|date',
+            'tanggal_exp_pelatihan' => 'required|date|before_or_equal:tanggal_pelatihan',
+            'harga'                 => 'required|numeric',
+            'kuota'                 => 'required|numeric',
+            'status'                => 'required',
+            'gambar'                => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'nama_pelatih'          => 'required|string|max:255', // 🟢 Tambahan Validasi Nama Pelatih
+            'ttd_pelatih'           => 'required|image|mimes:png|max:2048', // 🟢 Tambahan Validasi TTD (.png)
         ]);
 
-        $data = $request->all();
+        $dataDb = [
+            'title'                 => $request->nama_pelatihan,
+            'description'           => $request->deskripsi,
+            'ketentuan'             => $request->ketentuan,
+            'tanggal_pelatihan'     => $request->tanggal_pelatihan,
+            'tanggal_exp_pelatihan' => $request->tanggal_exp_pelatihan,
+            'price'                 => $request->harga,
+            'quota'                 => $request->kuota,
+            'status'                => $request->status,
+            'nama_pelatih'          => $request->nama_pelatih, // 🟢 Simpan Nama Pelatih
+        ];
 
-        // Logika Upload Gambar
         if ($request->hasFile('gambar')) {
-            $data['gambar'] = $request->file('gambar')->store('pelatihan', 'public');
+            $dataDb['gambar'] = $request->file('gambar')->store('pelatihan', 'public');
         }
 
-        KelasPelatihan::create($data);
+        // Handle Unggah File TTD Pelatih ke Disk Public
+        if ($request->hasFile('ttd_pelatih')) {
+            $dataDb['ttd_pelatih'] = $request->file('ttd_pelatih')->store('ttd', 'public');
+        }
 
-        return redirect()->route('kelas-pelatihan.index')
-                         ->with('success', 'Pelatihan berhasil ditambahkan');
+        KelasPelatihan::create($dataDb);
+
+        return redirect()->route('kelas-pelatihan.index')->with('success', 'Pelatihan berhasil ditambahkan!');
     }
 
     public function edit($id)
@@ -52,43 +73,75 @@ class KelasPelatihanController extends Controller
 
     public function update(Request $request, $id)
     {
-        $pelatihan = KelasPelatihan::findOrFail($id);
-
         $request->validate([
-            'nama_pelatihan' => 'required',
-            'harga'          => 'required|numeric',
-            'kuota'          => 'required|numeric',
-            'status'         => 'required|in:open,closed',
-            'gambar'         => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'nama_pelatihan'        => 'required|string|max:255',
+            'deskripsi'             => 'required',
+            'ketentuan'             => 'required',
+            'tanggal_pelatihan'     => 'required|date',
+            'tanggal_exp_pelatihan' => 'required|date|before_or_equal:tanggal_pelatihan',
+            'harga'                 => 'required|numeric',
+            'kuota'                 => 'required|numeric',
+            'status'                => 'required',
+            'gambar'                => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'nama_pelatih'          => 'required|string|max:255', // 🟢 Tambahan Validasi Nama Pelatih
+            'ttd_pelatih'           => 'nullable|image|mimes:png|max:2048', // 🟢 Boleh Kosong Saat Edit
         ]);
 
-        $data = $request->all();
+        $pelatihan = KelasPelatihan::findOrFail($id);
 
-        // Logika Update Gambar (Hapus yang lama jika ada yang baru)
+        $dataDb = [
+            'title'                 => $request->nama_pelatihan,
+            'description'           => $request->deskripsi,
+            'ketentuan'             => $request->ketentuan,
+            'tanggal_pelatihan'     => $request->tanggal_pelatihan,
+            'tanggal_exp_pelatihan' => $request->tanggal_exp_pelatihan,
+            'price'                 => $request->harga,
+            'quota'                 => $request->kuota,
+            'status'                => $request->status,
+            'nama_pelatih'          => $request->nama_pelatih, // 🟢 Update Nama Pelatih
+        ];
+
         if ($request->hasFile('gambar')) {
-            if ($pelatihan->gambar) {
+            if ($pelatihan->gambar && Storage::disk('public')->exists($pelatihan->gambar)) {
                 Storage::disk('public')->delete($pelatihan->gambar);
             }
-            $data['gambar'] = $request->file('gambar')->store('pelatihan', 'public');
+            $dataDb['gambar'] = $request->file('gambar')->store('pelatihan', 'public');
         }
 
-        $pelatihan->update($data);
+        // Handle Update TTD Pelatih (Hapus File Lama Jika Ada File Baru Masuk)
+        if ($request->hasFile('ttd_pelatih')) {
+            if ($pelatihan->ttd_pelatih && Storage::disk('public')->exists($pelatihan->ttd_pelatih)) {
+                Storage::disk('public')->delete($pelatihan->ttd_pelatih);
+            }
+            $dataDb['ttd_pelatih'] = $request->file('ttd_pelatih')->store('ttd', 'public');
+        }
 
-        return redirect()->route('kelas-pelatihan.index')
-                         ->with('success', 'Pelatihan berhasil diupdate');
+        $pelatihan->update($dataDb);
+
+        return redirect()->route('kelas-pelatihan.index')->with('success', 'Data Pelatihan berhasil diperbarui!');
     }
 
     public function destroy($id)
     {
         $pelatihan = KelasPelatihan::findOrFail($id);
         
-
-        if ($pelatihan->gambar) {
+        if ($pelatihan->gambar && Storage::disk('public')->exists($pelatihan->gambar)) {
             Storage::disk('public')->delete($pelatihan->gambar);
+        }
+
+        // Tambahan: Hapus berkas TTD pelatih dari disk saat data pelatihan dihapus
+        if ($pelatihan->ttd_pelatih && Storage::disk('public')->exists($pelatihan->ttd_pelatih)) {
+            Storage::disk('public')->delete($pelatihan->ttd_pelatih);
         }
         
         $pelatihan->delete();
 
-        return back()->with('success', 'Pelatihan berhasil dihapus');
+        return redirect()->route('kelas-pelatihan.index')->with('success', 'Pelatihan berhasil dihapus!');
+    }
+
+    public function cetak($id)
+    {
+        $pelatihan = KelasPelatihan::findOrFail($id);
+        return "Sedang menyiapkan fitur cetak PDF untuk: " . $pelatihan->title;
     }
 }
