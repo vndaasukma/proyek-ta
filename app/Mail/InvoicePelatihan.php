@@ -7,6 +7,9 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\PendaftaranPelatihan;
 
+/**
+ * @author Vinda Ambitha Sukma
+ */
 class InvoicePelatihan extends Mailable
 {
     use Queueable, SerializesModels;

@@ -4,8 +4,8 @@
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0 text-gray-800 fw-bold">pesan masuk pengunjung.</h1>
-            <p class="text-muted small mb-0">kelola semua pertanyaan dan saran dari formulir hubungi kami.</p>
+            <h1 class="h3 mb-0 text-gray-800 fw-bold">Pesan Masuk Pengunjung.</h1>
+            <p class="text-muted small mb-0">Kelola semua pertanyaan dan saran dari formulir hubungi kami.</p>
         </div>
         <div class="text-end">
             <span class="badge bg-success rounded-pill px-3 py-2">

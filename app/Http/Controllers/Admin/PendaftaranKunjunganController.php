@@ -45,27 +45,28 @@ class PendaftaranKunjunganController extends Controller
     }
 
     /**
-     * Menampilkan Tabel List Pendaftaran di Dashboard Admin
+     * Menampilkan Table List Pendaftaran di Dashboard Admin
      */
     public function index() {
+        // SINKRONISASI: Dikembalikan ke nama $list_pendaftaran agar sesuai dengan file Blade asli kamu
         $list_pendaftaran = PendaftaranKunjungan::latest()->get();
-        // Mengambil list gembok tanggal untuk diletakkan di panel kanan admin
         $lockedDates = LockedDate::orderBy('date', 'asc')->get();
 
         return view('admin.kunjungan.pendaftaran', compact('list_pendaftaran', 'lockedDates'));
     }
 
     /**
-     * Memproses Kiriman Form Pendaftaran dari User Luar
+     * Memproses Kiriman Form Pendaftaran dari User Luar (Halaman Depan)
      */
     public function store(Request $request) {
         $request->validate([
-            'nama_pemohon' => 'required',
-            'instansi' => 'required',
-            'no_wa' => 'required',
-            'email' => 'required|email',
+            'nama_pemohon'      => 'required',
+            'instansi'          => 'required',
+            'jumlah_pengunjung' => 'required|integer|min:1', 
+            'no_wa'             => 'required',
+            'email'             => 'required|email',
             'tanggal_kunjungan' => 'required|date|after_or_equal:today',
-            'sesi' => 'required',
+            'sesi'              => 'required',
         ]);
 
         // Proteksi keamanan jika user mencoba mendaftar pada tanggal yang digembok
@@ -75,17 +76,18 @@ class PendaftaranKunjunganController extends Controller
         }
 
         PendaftaranKunjungan::create([
-            'nama_pemohon' => $request->nama_pemohon,
-            'instansi' => $request->instansi,
-            'email' => $request->email,
-            'no_wa' => $request->no_wa,
+            'nama_pemohon'      => $request->nama_pemohon,
+            'instansi'          => $request->instansi,
+            'jumlah_pengunjung' => $request->jumlah_pengunjung, 
+            'email'             => $request->email,
+            'no_wa'             => $request->no_wa,
             'tanggal_kunjungan' => $request->tanggal_kunjungan,
-            'sesi' => $request->sesi,
-            'keperluan' => $request->keperluan,
-            'status' => 'pending'
+            'sesi'              => $request->sesi,
+            'keperluan'         => $request->keperluan,
+            'status'            => 'pending'
         ]);
 
-        return back()->with('success', 'Pengajuan reservasi Anda telah kami terima. Tim Gubuk Sayur akan segera meninjau jadwal tersebut. Mohon tunggu konfirmasi resmi yang akan dikirimkan melalui pesan WhatsApp ke nomor Anda dalam 1x24 jam.');
+        return back()->with('success', 'Pengajuan reservasi Anda telah kami terima. Tim Gubuk Sayur akan segera meninjau jadwal tersebut. Mohon tunggu konfirmasi resmi yang akan dikirimkan melalui pesan WhatsApp ke nomor Anda.');
     }
 
     /**
@@ -180,28 +182,28 @@ class PendaftaranKunjunganController extends Controller
     }
 
     /**
-     * ==========================================
-     * FITUR BARU: LOGIKA KONTROL MANDIRI ADMIN
-     * ==========================================
-     */
-
-    /**
      * Memproses Reschedule Jadwal Peserta Langsung oleh Admin via Modal
      */
     public function reschedule(Request $request, $id) {
+        $data = PendaftaranKunjungan::findOrFail($id);
+
+        // VALIDASI BACKEND 1: Jika tanggal kunjungan awal yang ingin diganti ternyata sudah lewat dari hari ini
+        if (Carbon::parse($data->tanggal_kunjungan)->startOfDay()->lt(Carbon::today())) {
+            return back()->with('error', 'Gagal! Jadwal kunjungan yang sudah terlewat tidak dapat di-reschedule kembali.');
+        }
+
+        // VALIDASI BACKEND 2: Memastikan input 'tanggal_baru' terisi, bertipe date, dan minimal hari ini/ke depan
         $request->validate([
-            'tanggal_baru' => 'required|date',
+            'tanggal_baru' => 'required|date|after_or_equal:today',
         ]);
 
-        // Validasi agar admin tidak sengaja memindahkan ke tanggal yang sedang di-lock mandiri
         $isLocked = LockedDate::where('date', $request->tanggal_baru)->exists();
         if ($isLocked) {
             return back()->with('error', 'Gagal memindahkan jadwal. Tanggal baru yang Anda pilih sedang dalam status dikunci/gembok.');
         }
 
-        $data = PendaftaranKunjungan::findOrFail($id);
         $data->update([
-            'tanggal_kunjungan' => $request->tanggal_baru
+            'tanggal_kunjungan' => $request->tanggal_baru 
         ]);
 
         return back()->with('success', 'Jadwal kunjungan ' . $data->instansi . ' berhasil di-reschedule ke tanggal ' . date('d-m-Y', strtotime($request->tanggal_baru)) . '.');
@@ -241,23 +243,25 @@ class PendaftaranKunjunganController extends Controller
      */
     public function storeManual(Request $request) {
         $request->validate([
-            'nama_pemohon' => 'required|string|max:255',
-            'instansi' => 'required|string|max:255',
-            'no_wa' => 'required|string',
-            'email' => 'required|email',
+            'nama_pemohon'      => 'required|string|max:255',
+            'instansi'          => 'required|string|max:255',
+            'jumlah_pengunjung' => 'required|integer|min:1', 
+            'no_wa'             => 'required|string',
+            'email'             => 'required|email',
             'tanggal_kunjungan' => 'required|date',
-            'sesi' => 'required',
+            'sesi'              => 'required',
         ]);
 
         PendaftaranKunjungan::create([
-            'nama_pemohon' => $request->nama_pemohon,
-            'instansi' => $request->instansi,
-            'email' => $request->email,
-            'no_wa' => $request->no_wa,
+            'nama_pemohon'      => $request->nama_pemohon,
+            'instansi'          => $request->instansi,
+            'jumlah_pengunjung' => $request->jumlah_pengunjung, 
+            'email'             => $request->email,
+            'no_wa'             => $request->no_wa,
             'tanggal_kunjungan' => $request->tanggal_kunjungan,
-            'sesi' => $request->sesi,
-            'keperluan' => $request->keperluan ?? 'Input manual oleh admin',
-            'status' => 'approved' // Otomatis disetujui tanpa status pending
+            'sesi'              => $request->sesi,
+            'keperluan'         => $request->keperluan ?? 'Input manual oleh admin',
+            'status'            => 'approved' 
         ]);
 
         return back()->with('success', 'Data kunjungan berhasil didaftarkan langsung oleh admin dengan status Approved!');

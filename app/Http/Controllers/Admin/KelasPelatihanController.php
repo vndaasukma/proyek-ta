@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * @author
+ * @author Vinda Ambitha Sukma
  */
 class KelasPelatihanController extends Controller
 {
@@ -30,13 +30,11 @@ class KelasPelatihanController extends Controller
             'deskripsi'             => 'required',
             'ketentuan'             => 'required',
             'tanggal_pelatihan'     => 'required|date',
-            'tanggal_exp_pelatihan' => 'required|date|before_or_equal:tanggal_pelatihan',
+            'batas_pendaftaran'     => 'required|date|before_or_equal:tanggal_pelatihan',
             'harga'                 => 'required|numeric',
             'kuota'                 => 'required|numeric',
             'status'                => 'required',
             'gambar'                => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'nama_pelatih'          => 'required|string|max:255', // 🟢 Tambahan Validasi Nama Pelatih
-            'ttd_pelatih'           => 'required|image|mimes:png|max:2048', // 🟢 Tambahan Validasi TTD (.png)
         ]);
 
         $dataDb = [
@@ -44,20 +42,14 @@ class KelasPelatihanController extends Controller
             'description'           => $request->deskripsi,
             'ketentuan'             => $request->ketentuan,
             'tanggal_pelatihan'     => $request->tanggal_pelatihan,
-            'tanggal_exp_pelatihan' => $request->tanggal_exp_pelatihan,
+            'tanggal_exp_pelatihan' => $request->batas_pendaftaran,
             'price'                 => $request->harga,
             'quota'                 => $request->kuota,
             'status'                => $request->status,
-            'nama_pelatih'          => $request->nama_pelatih, // 🟢 Simpan Nama Pelatih
         ];
 
         if ($request->hasFile('gambar')) {
             $dataDb['gambar'] = $request->file('gambar')->store('pelatihan', 'public');
-        }
-
-        // Handle Unggah File TTD Pelatih ke Disk Public
-        if ($request->hasFile('ttd_pelatih')) {
-            $dataDb['ttd_pelatih'] = $request->file('ttd_pelatih')->store('ttd', 'public');
         }
 
         KelasPelatihan::create($dataDb);
@@ -78,13 +70,11 @@ class KelasPelatihanController extends Controller
             'deskripsi'             => 'required',
             'ketentuan'             => 'required',
             'tanggal_pelatihan'     => 'required|date',
-            'tanggal_exp_pelatihan' => 'required|date|before_or_equal:tanggal_pelatihan',
+            'batas_pendaftaran'     => 'required|date|before_or_equal:tanggal_pelatihan',
             'harga'                 => 'required|numeric',
             'kuota'                 => 'required|numeric',
             'status'                => 'required',
             'gambar'                => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'nama_pelatih'          => 'required|string|max:255', // 🟢 Tambahan Validasi Nama Pelatih
-            'ttd_pelatih'           => 'nullable|image|mimes:png|max:2048', // 🟢 Boleh Kosong Saat Edit
         ]);
 
         $pelatihan = KelasPelatihan::findOrFail($id);
@@ -94,11 +84,10 @@ class KelasPelatihanController extends Controller
             'description'           => $request->deskripsi,
             'ketentuan'             => $request->ketentuan,
             'tanggal_pelatihan'     => $request->tanggal_pelatihan,
-            'tanggal_exp_pelatihan' => $request->tanggal_exp_pelatihan,
+            'tanggal_exp_pelatihan' => $request->batas_pendaftaran,
             'price'                 => $request->harga,
             'quota'                 => $request->kuota,
             'status'                => $request->status,
-            'nama_pelatih'          => $request->nama_pelatih, // 🟢 Update Nama Pelatih
         ];
 
         if ($request->hasFile('gambar')) {
@@ -106,14 +95,6 @@ class KelasPelatihanController extends Controller
                 Storage::disk('public')->delete($pelatihan->gambar);
             }
             $dataDb['gambar'] = $request->file('gambar')->store('pelatihan', 'public');
-        }
-
-        // Handle Update TTD Pelatih (Hapus File Lama Jika Ada File Baru Masuk)
-        if ($request->hasFile('ttd_pelatih')) {
-            if ($pelatihan->ttd_pelatih && Storage::disk('public')->exists($pelatihan->ttd_pelatih)) {
-                Storage::disk('public')->delete($pelatihan->ttd_pelatih);
-            }
-            $dataDb['ttd_pelatih'] = $request->file('ttd_pelatih')->store('ttd', 'public');
         }
 
         $pelatihan->update($dataDb);
@@ -127,11 +108,6 @@ class KelasPelatihanController extends Controller
         
         if ($pelatihan->gambar && Storage::disk('public')->exists($pelatihan->gambar)) {
             Storage::disk('public')->delete($pelatihan->gambar);
-        }
-
-        // Tambahan: Hapus berkas TTD pelatih dari disk saat data pelatihan dihapus
-        if ($pelatihan->ttd_pelatih && Storage::disk('public')->exists($pelatihan->ttd_pelatih)) {
-            Storage::disk('public')->delete($pelatihan->ttd_pelatih);
         }
         
         $pelatihan->delete();

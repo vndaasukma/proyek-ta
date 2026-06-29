@@ -63,7 +63,7 @@
             display: flex; align-items: center; justify-content: center;
         }
         .logo-box i { color: #fff; font-size: 18px; }
-        .logo-name { font-size: 1rem; font-weight: 700; color: #d1fae5; letter-spacing: -0.2px; text-transform: lowercase; }
+        .logo-name { font-size: 1rem; font-weight: 700; color: #d1fae5; letter-spacing: -0.2px; text-transform: none; }
 
         .left-headline {
             font-family: 'Instrument Serif', serif;
@@ -71,7 +71,7 @@
             line-height: 1;
             color: #ecfdf5;
             margin-bottom: 1.2rem;
-            text-transform: lowercase;
+            text-transform: none;
         }
         .left-headline em { font-style: italic; color: var(--g400); }
 
@@ -203,6 +203,45 @@
         }
         .btn-submit:hover { background: var(--g500); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(22,163,74,0.15); }
 
+        /* KUSTOM CSS UNTUK SEPARATOR & TOMBOL GOOGLE */
+        .divider-container {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: #2d4a35;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .divider-container::before, .divider-container::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #1a2e20;
+        }
+        .divider-container:not(:empty)::before { margin-right: 1em; }
+        .divider-container:not(:empty)::after { margin-left: 1em; }
+
+        .btn-google {
+            width: 100%; height: 50px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid #1a2e20;
+            border-radius: 10px;
+            color: #cbd5e1;
+            font-size: 0.9rem; font-weight: 600;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn-google:hover {
+            background: rgba(34, 197, 94, 0.05);
+            border-color: var(--g600);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(34, 197, 94, 0.08);
+        }
+
         .security-row { display: flex; justify-content: center; gap: 1.5rem; margin-top: 2rem; }
         .sec-item { display: flex; align-items: center; gap: 6px; font-size: 0.7rem; color: #1e3325; }
         .sec-item i { color: var(--g700); }
@@ -227,10 +266,10 @@
                 <span class="logo-name">P4S Gubuk Sayur.</span>
             </div>
             <h1 class="left-headline">
-                kendali penuh<br>ekosistem <em>pertanian</em><br>modern.
+                Kendali penuh<br>ekosistem <em>pertanian</em><br>modern.
             </h1>
             <p class="left-sub">
-                Portal administrasi terpadu untuk manajemen pelatihan, kunjungan edukasi, dan kolaborasi mitra strategis secara real-time.
+                Portal administrasi terpadu untuk mengelola Dashboard P4S Gubuk Sayur Lumajang.
             </p>
             <div class="stat-row">
                 <div class="stat-pill"><span class="num">Official</span><span class="lbl">Admin Portal</span></div>
@@ -240,8 +279,8 @@
         </div>
         <div class="left-inner">
             <div class="feature-list">
-                <div class="feature-item"><i class="bi bi-check-circle-fill"></i>Verifikasi otomatis dokumen kemitraan strategis</div>
-                <div class="feature-item"><i class="bi bi-check-circle-fill"></i>Penjadwalan presisi sesi kunjungan edukatif</div>
+                <div class="feature-item"><i class="bi bi-check-circle-fill"></i>Verifikasi otomatis dokumen kemitraan</div>
+                <div class="feature-item"><i class="bi bi-check-circle-fill"></i>Penjadwalan sesi kunjungan edukatif</div>
                 <div class="feature-item"><i class="bi bi-check-circle-fill"></i>Manajemen pembayaran pelatihan via Midtrans</div>
                 <div class="feature-item"><i class="bi bi-check-circle-fill"></i>Laporan digital otomatis format PDF & Invoice</div>
             </div>
@@ -254,7 +293,7 @@
 
             <div class="form-eyebrow">Akses Administrator</div>
             <div class="form-title">Masuk Dashboard</div>
-            <div class="form-subtitle">Silakan masukkan akun pengelola P4S</div>
+            <div class="form-subtitle">Silahkan masukkan akun pengelola P4S</div>
 
             @if(session('error'))
             <div class="err-alert">
@@ -280,7 +319,7 @@
                     <label class="field-label">Kata Sandi</label>
                     <div class="field-wrap">
                         <input type="password" id="password" name="password" class="field-input"
-                            placeholder="••••••••••" required>
+                            placeholder="••••••••••">
                         <i class="bi bi-shield-lock field-icon"></i>
                         <button type="button" class="toggle-btn" id="togglePass">
                             <i class="bi bi-eye" id="eyeIcon"></i>
@@ -299,6 +338,18 @@
                     Masuk ke Sistem <i class="bi bi-chevron-right"></i>
                 </button>
             </form>
+
+            <div class="divider-container">atau</div>
+
+            <a href="{{ route('google.login') }}" class="btn-google">
+                <svg class="flex-shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+                </svg>
+                <span>Masuk dengan Google</span>
+            </a>
 
             <div class="security-row">
                 <div class="sec-item"><i class="bi bi-shield-check"></i> Enkripsi Data</div>

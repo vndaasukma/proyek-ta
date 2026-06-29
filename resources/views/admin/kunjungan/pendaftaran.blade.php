@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('admin.layout')
 
 @section('content')
 <div class="container-fluid p-0">
@@ -78,7 +78,7 @@
         <div class="col-12">
             <div class="card shadow border-0" style="border-radius: 12px;">
                 <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center" style="border-radius: 12px 12px 0 0;">
-                    <h6 class="m-0 font-weight-bold text-success mb-0"><i class="fas fa-calendar-alt me-2"></i> Manajemen Permohonan Kunjungan</h6>
+                    <h6 class="m-0 font-weight-bold text-success mb-0"><i class="fas fa-calendar-alt me-2"></i>  Manajemen Permohonan Kunjungan</h6>
                     <button type="button" class="btn btn-success btn-sm fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#addManualModal" style="border-radius: 8px;">
                         <i class="fas fa-plus-circle me-1"></i> Tambah Kunjungan Manual
                     </button>
@@ -135,9 +135,12 @@
                                                 </button>
                                             @endif
                                             
-                                            <button type="button" class="btn btn-outline-primary btn-sm px-2" data-bs-toggle="modal" data-bs-target="#rescheduleModal{{ $item->id }}" title="Reschedule Jadwal">
-                                                <i class="fas fa-clock"></i>
-                                            </button>
+                                            <!-- VALIDASI FRONTEND: Sembunyikan tombol reschedule jika tanggal kunjungan sudah lewat -->
+                                            @if(\Carbon\Carbon::parse($item->tanggal_kunjungan)->startOfDay()->gte(\Carbon\Carbon::today()))
+                                                <button type="button" class="btn btn-outline-primary btn-sm px-2" data-bs-toggle="modal" data-bs-target="#rescheduleModal{{ $item->id }}" title="Reschedule Jadwal">
+                                                    <i class="fas fa-clock"></i>
+                                                </button>
+                                            @endif
 
                                             <form action="{{ route('admin.kunjungan.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data reservasi ini secara permanen?')" class="m-0">
                                                 @csrf @method('DELETE')

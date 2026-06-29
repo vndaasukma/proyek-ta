@@ -9,15 +9,13 @@ use Midtrans\Snap;
 use Midtrans\Config;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InvoicePelatihan;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @author Vinda Ambitha Sukma
  */
 class PendaftaranPelatihanController extends Controller
 {
-    /**
-     * Fungsi untuk menyimpan pendaftaran dan generate Snap Token
-     */
     public function store(Request $request)
     {
         $orderId = 'PLT-' . time();
@@ -66,29 +64,36 @@ class PendaftaranPelatihanController extends Controller
         }
     }
 
-    /**
-     * JALUR KILAT BROWSER: Mengubah status otomatis pasca-pembayaran sukses
-     */
     public function suksesDaftar(Request $request)
     {
         $orderId = $request->query('order_id');
+        Log::info("MIDTRANS REDIRECT: Memasuki halaman sukses-daftar. Order ID: " . $orderId);
 
         if ($orderId) {
-            $pendaftaran = PendaftaranPelatihan::where('order_id', $orderId)->first();
+            // Wajib memanggil with('pelatihan.jadwal') agar relasi siap dibaca di dalam email
+            $pendaftaran = PendaftaranPelatihan::with('pelatihan.jadwal')->where('order_id', $orderId)->first();
 
-            if ($pendaftaran && $pendaftaran->status_pembayaran !== 'Success') {
-                $pendaftaran->update([
-                    'status_pembayaran'  => 'Success',
-                    'status_pendaftaran' => 'Success'
-                ]);
+            if ($pendaftaran) {
+                // Gunakan strtolower agar kebal dari kesalahan huruf besar/kecil di database
+                if (strtolower($pendaftaran->status_pembayaran) !== 'success') {
+                    
+                    $pendaftaran->update([
+                        'status_pembayaran'  => 'Success',
+                        'status_pendaftaran' => 'Success'
+                    ]);
 
-                KelasPelatihan::where('id', $pendaftaran->pelatihan_id)->increment('terisi');
-
-                // Kirim email invoice aman (Anti-Crash)
-                try {
-                    Mail::to($pendaftaran->email)->send(new InvoicePelatihan($pendaftaran));
-                } catch (\Throwable $e) {
-                    \Log::error('Email invoice via Browser gagal: ' . $e->getMessage());
+                    KelasPelatihan::where('id', $pendaftaran->pelatihan_id)->increment('terisi');
+                    
+                    Log::info("MEMULAI KIRIM EMAIL INVOICE KE: " . $pendaftaran->email);
+                    
+                    try {
+                        Mail::to($pendaftaran->email)->send(new InvoicePelatihan($pendaftaran));
+                        Log::info("STATUS EMAIL: BERHASIL DIKIRIM!");
+                    } catch (\Exception $e) {
+                        Log::error("CRASH KIRIM EMAIL INVOICE: " . $e->getMessage());
+                    }
+                } else {
+                    Log::info("STATUS SUDAH LUNAS. (Email kemungkinan sudah dikirim oleh Webhook).");
                 }
             }
         }
@@ -96,9 +101,6 @@ class PendaftaranPelatihanController extends Controller
         return view('sukses-daftar');
     }
 
-    /**
-     * Webhook Notification: Menangkap sinyal sukses dari Midtrans
-     */
     public function notification(Request $request)
     {
         $payload = $request->getContent();
@@ -108,13 +110,15 @@ class PendaftaranPelatihanController extends Controller
             return response()->json(['message' => 'Invalid payload'], 400);
         }
 
-        $pendaftaran = PendaftaranPelatihan::where('order_id', $notification->order_id)->first();
+        Log::info("WEBHOOK MIDTRANS MASUK. Order ID: " . $notification->order_id);
+        
+        $pendaftaran = PendaftaranPelatihan::with('pelatihan.jadwal')->where('order_id', $notification->order_id)->first();
 
         if ($pendaftaran) {
             $status = $notification->transaction_status;
 
             if ($status == 'settlement' || $status == 'capture') {
-                if ($pendaftaran->status_pembayaran !== 'Success') {
+                if (strtolower($pendaftaran->status_pembayaran) !== 'success') {
                     $pendaftaran->update([
                         'status_pembayaran'  => 'Success',
                         'status_pendaftaran' => 'Success'
@@ -122,15 +126,16 @@ class PendaftaranPelatihanController extends Controller
                     
                     KelasPelatihan::where('id', $pendaftaran->pelatihan_id)->increment('terisi');
 
-                    // Kirim email invoice backup aman (Anti-Crash)
+                    Log::info("WEBHOOK MEMULAI KIRIM EMAIL INVOICE KE: " . $pendaftaran->email);
                     try {
                         Mail::to($pendaftaran->email)->send(new InvoicePelatihan($pendaftaran));
-                    } catch (\Throwable $e) {
-                        \Log::error('Email invoice via Webhook gagal: ' . $e->getMessage());
+                        Log::info("WEBHOOK STATUS EMAIL: BERHASIL DIKIRIM!");
+                    } catch (\Exception $e) {
+                        Log::error("WEBHOOK CRASH KIRIM EMAIL: " . $e->getMessage());
                     }
                 }
             } elseif ($status == 'deny' || $status == 'expire' || $status == 'cancel') {
-                if ($pendaftaran->status_pembayaran == 'Success') {
+                if (strtolower($pendaftaran->status_pembayaran) == 'success') {
                     KelasPelatihan::where('id', $pendaftaran->pelatihan_id)->decrement('terisi');
                 }
                 $pendaftaran->update([
@@ -139,7 +144,6 @@ class PendaftaranPelatihanController extends Controller
                 ]);
             }
 
-            // PENTING: Selalu beri respon 200 OK ke Midtrans agar tidak dikirimi email error lagi
             return response()->json(['status' => 'ok'], 200);
         }
 

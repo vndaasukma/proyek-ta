@@ -10,6 +10,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
+/**
+ * @author Vinda Ambitha Sukma
+ */
 class KemitraanController extends Controller
 {
     public function index()
@@ -20,12 +23,11 @@ class KemitraanController extends Controller
 
     public function storeFront(Request $request)
     {
-        // PERBAIKAN: Menambahkan validasi email agar wajib diisi
         $request->validate([
             'nama_perwakilan' => 'required',
             'nama_instansi'   => 'required',
             'no_wa'           => 'required',
-            'email'           => 'required|email', // <--- INI YANG KURANG SEBELUMNYA
+            'email'           => 'required|email',
             'deskripsi'       => 'required',
             'proposal'        => 'nullable|mimes:pdf,doc,docx|max:2048', 
         ]);
@@ -36,12 +38,11 @@ class KemitraanController extends Controller
             $path = $file->store('proposals', 'public');
         }
 
-        // PERBAIKAN: Menyimpan email ke database
         Kemitraan::create([
             'nama_perwakilan' => $request->nama_perwakilan,
             'nama_instansi'   => $request->nama_instansi,
             'no_wa'           => $request->no_wa,
-            'email'           => $request->email,  // <--- INI JUGA YANG KURANG SEBELUMNYA
+            'email'           => $request->email,
             'deskripsi'       => $request->deskripsi,
             'proposal_path'   => $path,
             'status'          => 'pending',
@@ -58,21 +59,19 @@ class KemitraanController extends Controller
         $k = Kemitraan::findOrFail($id);
         $k->update(['status' => 'approved']);
 
-        // 1. Format Nomor WA (Ubah 08 jadi 628)
         $noWa = preg_replace('/[^0-9]/', '', $k->no_wa);
         if (substr($noWa, 0, 1) == '0') {
             $noWa = '62' . substr($noWa, 1);
         }
 
-        $pesan = "Halo Bapak/Ibu *{$k->nama_perwakilan}* dari *{$k->nama_instansi}*.\n\nSelamat! Pengajuan kerja sama / kemitraan Anda dengan *P4S Gubuk Sayur Lumajang* telah kami *SETUJUI*.\n\nSurat persetujuan resmi telah diterbitkan oleh sistem kami. Tim kami akan segera berkoordinasi lebih lanjut dengan Anda.\n\nTerima kasih atas antusiasme kerja samanya! 🥬✨";
+        $pesan = "Halo Bapak/Ibu *{$k->nama_perwakilan}* dari *{$k->nama_instansi}*.\n\nSelamat! Pengajuan kerja sama / kemitraan Anda dengan *P4S Gubuk Sayur Lumajang* telah kami *SETUJUI*.\n\nSurat persetujuan resmi telah diterbitkan oleh sistem kami. Tim kami akan segera berkoordinasi lebih lanjut dengan Anda.\n\nTeria kasih atas antusiasme kerja samanya! 🥬✨";
 
         $notifStatus = "Kemitraan disetujui.";
 
-        // 2. Kirim WA via Fonnte
         try {
             $response = Http::withoutVerifying()
                 ->asForm()
-                ->withHeaders(['Authorization' => '3Pzf4Ebz7ZYyxt2aQbyL']) // Token Vinda
+                ->withHeaders(['Authorization' => '3Pzf4Ebz7ZYyxt2aQbyL'])
                 ->post('https://api.fonnte.com/send', [
                     'target'  => $noWa,
                     'message' => $pesan,
@@ -87,7 +86,6 @@ class KemitraanController extends Controller
             $notifStatus .= " (Error API Fonnte).";
         }
 
-        // 3. Kirim Email (Jika kolom email ada dan tidak kosong)
         if (!empty($k->email)) {
             try {
                 Mail::raw($pesan, function ($message) use ($k) {
@@ -111,7 +109,6 @@ class KemitraanController extends Controller
         $k = Kemitraan::findOrFail($id);
         $k->update(['status' => 'rejected']);
 
-        // 1. Format Nomor WA (Ubah 08 jadi 628)
         $noWa = preg_replace('/[^0-9]/', '', $k->no_wa);
         if (substr($noWa, 0, 1) == '0') {
             $noWa = '62' . substr($noWa, 1);
@@ -121,11 +118,10 @@ class KemitraanController extends Controller
 
         $notifStatus = "Kemitraan ditolak.";
 
-        // 2. Kirim WA via Fonnte
         try {
             $response = Http::withoutVerifying()
                 ->asForm()
-                ->withHeaders(['Authorization' => '3Pzf4Ebz7ZYyxt2aQbyL']) // Token Vinda
+                ->withHeaders(['Authorization' => '3Pzf4Ebz7ZYyxt2aQbyL'])
                 ->post('https://api.fonnte.com/send', [
                     'target'  => $noWa,
                     'message' => $pesan,
@@ -140,7 +136,6 @@ class KemitraanController extends Controller
             $notifStatus .= " (Error API Fonnte).";
         }
 
-        // 3. Kirim Email
         if (!empty($k->email)) {
             try {
                 Mail::raw($pesan, function ($message) use ($k) {
@@ -168,6 +163,80 @@ class KemitraanController extends Controller
                   ->setPaper('a4', 'portrait');
 
         return $pdf->stream('Surat_Kemitraan_'.$data->id.'.pdf');
+    }
+
+    // =========================================================================
+    // REVISI BARU: FUNGSI AUTOMATED BLAST KIRIM DIGITAL (PDF EMAIL + WA FONNTE)
+    // =========================================================================
+    public function sendLetter($id)
+    {
+        $data = Kemitraan::findOrFail($id);
+
+        if (empty($data->email) || empty($data->no_wa)) {
+            return back()->with('error', 'Gagal memproses pengiriman. Alamat email atau nomor WhatsApp pengaju tidak terdata.');
+        }
+
+        // 1. Generate PDF di memori RAM tanpa menyimpan file fisik lokal
+        $pdf = Pdf::loadView('admin.pdf.surat_kemitraan', compact('data'))
+                  ->setPaper('a4', 'portrait');
+
+        // 2. Format Sanitasi Nomor HP Fonnte
+        $noWa = preg_replace('/[^0-9]/', '', $data->no_wa);
+        if (substr($noWa, 0, 1) == '0') {
+            $noWa = '62' . substr($noWa, 1);
+        }
+
+        // 3. Bangun Format Kode Surat Online Berdasarkan Aturan Bulan Romawi & Padding ID
+        $bulanRomawi = [1 => 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'][date('n')];
+        $idPadding = sprintf('%03d', $data->id);
+        $noSuratFormat = "GS/OL/" . $idPadding . "/" . $bulanRomawi . "/" . date('Y');
+
+        $notifStatus = "Pemrosesan Blast Digital Sukses.";
+
+        // 4. Eksekusi Kirim Email Resmi dengan Lampiran PDF Mentah
+        try {
+            Mail::send([], [], function ($message) use ($data, $pdf) {
+                $message->to($data->email)
+                        ->subject('Surat Persetujuan Kemitraan Resmi - P4S Gubuk Sayur Lumajang')
+                        ->html('
+                            <p>Halo <strong>' . ($data->nama_perwakilan ?? 'Mitra') . '</strong>,</p>
+                            <p>Selamat! Pengajuan dokumen administrasi kerja sama dari instansi <strong>' . $data->nama_instansi . '</strong> telah diverifikasi dan disetujui secara legal oleh P4S Gubuk Sayur.</p>
+                            <p>Berikut kami lampirkan dokumen digital <strong>Surat Persetujuan Kemitraan Resmi</strong> dalam bentuk berkas PDF untuk diunduh.</p>
+                            <br>
+                            <p>Salam Hormat,</p>
+                            <p><strong>Tim Administrasi P4S Gubuk Sayur Lumajang</strong></p>
+                        ')
+                        ->attachData($pdf->output(), 'Surat_Persetujuan_Kemitraan_OL.pdf', [
+                            'mime' => 'application/pdf',
+                        ]);
+            });
+            $notifStatus .= " PDF Email Terkirim.";
+        } catch (\Exception $e) {
+            $notifStatus .= " (Gagal Email: Cek konfigurasi mail .env).";
+        }
+
+        // 5. Eksekusi Kirim Notifikasi Konfirmasi Nomor Surat via WA Fonnte
+        $pesanWA = "Halo Bapak/Ibu *{$data->nama_perwakilan}*,\n\nKami menginfokan bahwa dokumen Surat Persetujuan Kemitraan Resmi untuk *{$data->nama_instansi}* telah berhasil diterbitkan oleh sistem dengan Nomor Surat Resmi: *{$noSuratFormat}*. 🌱\n\nBerkas fisik PDF surat tersebut telah dikirimkan secara otomatis ke alamat email Anda (*{$data->email}*). Silakan melakukan pengecekan kotak masuk.\n\nTerima kasih atas kerja samanya!\n\nSalam,\n*P4S Gubuk Sayur Lumajang*";
+
+        try {
+            $response = Http::withoutVerifying()
+                ->asForm()
+                ->withHeaders(['Authorization' => '3Pzf4Ebz7ZYyxt2aQbyL'])
+                ->post('https://api.fonnte.com/send', [
+                    'target'  => $noWa,
+                    'message' => $pesanWA,
+                ]);
+
+            if ($response->successful() && isset($response['status']) && $response['status'] == true) {
+                $notifStatus .= " Notifikasi WA Terkirim.";
+            } else {
+                $notifStatus .= " (WA Tertolak Fonnte).";
+            }
+        } catch (\Exception $e) {
+            $notifStatus .= " (Gagal API Gateway WA).";
+        }
+
+        return back()->with('success', $notifStatus);
     }
 
     public function destroy($id)

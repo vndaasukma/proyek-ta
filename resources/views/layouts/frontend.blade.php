@@ -95,7 +95,7 @@
             font-weight: 500;
             color: var(--text-muted) !important;
             text-decoration: none;
-            text-transform: lowercase;
+            text-transform: none;
             letter-spacing: -0.01em;
             border-bottom: 2px solid transparent;
             transition: all 0.2s;
@@ -174,7 +174,7 @@
             font-weight: 500;
             color: var(--text-muted);
             text-decoration: none;
-            text-transform: lowercase;
+            text-transform: none;
             transition: all 0.15s;
         }
         .nav-mobile-link:hover,
@@ -212,7 +212,7 @@
             color: var(--text-muted);
             line-height: 1.6;
             max-width: 260px;
-            text-transform: lowercase;
+            text-transform: none;
         }
         .footer-col-title {
             font-size: 0.7rem;
@@ -227,7 +227,7 @@
             font-size: 0.82rem;
             color: var(--text-muted);
             text-decoration: none;
-            text-transform: lowercase;
+            text-transform: none;
             margin-bottom: 9px;
             transition: color 0.15s;
         }
@@ -254,7 +254,7 @@
             font-size: 0.8rem;
             color: var(--text-muted);
             line-height: 1.5;
-            text-transform: lowercase;
+            text-transform: none;
         }
 
         .footer-bottom {
@@ -269,6 +269,12 @@
         .footer-copy {
             font-size: 0.75rem;
             color: var(--text-muted);
+        }
+        .footer-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
         }
         .footer-social {
             display: flex;
@@ -288,6 +294,32 @@
             border-color: var(--p4s-green);
             color: var(--p4s-green);
             background: #f0fdf4;
+        }
+
+        /* Tombol Admin */
+        .footer-admin-btn {
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .footer-admin-btn:hover {
+            color: var(--p4s-green);
+            border-color: var(--p4s-green);
+            background: #f0fdf4;
+        }
+        .footer-admin-sep {
+            width: 1px;
+            height: 16px;
+            background: var(--border);
         }
 
         /* ── GLOBAL UTILS ────────────────────────────── */
@@ -326,24 +358,24 @@
 
             <ul class="navbar-nav-main">
                 <li class="nav-main-item">
-                    <a href="{{ url('/') }}" class="nav-main-link {{ request()->is('/') ? 'active' : '' }}">beranda</a>
+                    <a href="{{ url('/') }}" class="nav-main-link {{ request()->is('/') ? 'active' : '' }}">Beranda</a>
                 </li>
                 <li class="nav-main-item">
-                    <a href="{{ url('/pelatihan') }}" class="nav-main-link {{ request()->is('pelatihan*') ? 'active' : '' }}">pelatihan</a>
+                    <a href="{{ url('/pelatihan') }}" class="nav-main-link {{ request()->is('pelatihan*') ? 'active' : '' }}">Pelatihan</a>
                 </li>
                 <li class="nav-main-item">
-                    <a href="{{ url('/kunjungan') }}" class="nav-main-link {{ request()->is('kunjungan*') ? 'active' : '' }}">kunjungan</a>
+                    <a href="{{ url('/kunjungan') }}" class="nav-main-link {{ request()->is('kunjungan*') ? 'active' : '' }}">Kunjungan</a>
                 </li>
                 <li class="nav-main-item">
-                    <a href="{{ url('/kemitraan') }}" class="nav-main-link {{ request()->is('kemitraan*') ? 'active' : '' }}">kemitraan</a>
+                    <a href="{{ url('/kemitraan') }}" class="nav-main-link {{ request()->is('kemitraan*') ? 'active' : '' }}">Kemitraan</a>
                 </li>
                 <li class="nav-main-item">
-                    <a href="{{ url('/hubungi-kami') }}" class="nav-main-link {{ request()->is('hubungi-kami*') ? 'active' : '' }}">hubungi kami</a>
+                    <a href="{{ url('/hubungi-kami') }}" class="nav-main-link {{ request()->is('hubungi-kami*') ? 'active' : '' }}">Hubungi Kami</a>
                 </li>
             </ul>
 
             <div class="navbar-cta">
-                <a href="{{ url('/kunjungan') }}" class="btn-nav-cta">reservasi kunjungan</a>
+                <a href="{{ url('/kunjungan') }}" class="btn-nav-cta">Reservasi Kunjungan</a>
             </div>
 
             <button class="navbar-toggler-main" id="mobileToggler" aria-label="Menu">
@@ -357,13 +389,13 @@
 
     <div class="navbar-mobile" id="mobileNav">
         <div class="container">
-            <a href="{{ url('/') }}" class="nav-mobile-link {{ request()->is('/') ? 'active' : '' }}">beranda</a>
-            <a href="{{ url('/pelatihan') }}" class="nav-mobile-link {{ request()->is('pelatihan*') ? 'active' : '' }}">pelatihan</a>
-            <a href="{{ url('/kunjungan') }}" class="nav-mobile-link {{ request()->is('kunjungan*') ? 'active' : '' }}">kunjungan</a>
-            <a href="{{ url('/kemitraan') }}" class="nav-mobile-link {{ request()->is('kemitraan*') ? 'active' : '' }}">kemitraan</a>
-            <a href="{{ url('/hubungi-kami') }}" class="nav-mobile-link {{ request()->is('hubungi-kami*') ? 'active' : '' }}">hubungi kami</a>
+            <a href="{{ url('/') }}" class="nav-mobile-link {{ request()->is('/') ? 'active' : '' }}">Beranda</a>
+            <a href="{{ url('/pelatihan') }}" class="nav-mobile-link {{ request()->is('pelatihan*') ? 'active' : '' }}">Pelatihan</a>
+            <a href="{{ url('/kunjungan') }}" class="nav-mobile-link {{ request()->is('kunjungan*') ? 'active' : '' }}">Kunjungan</a>
+            <a href="{{ url('/kemitraan') }}" class="nav-mobile-link {{ request()->is('kemitraan*') ? 'active' : '' }}">Kemitraan</a>
+            <a href="{{ url('/hubungi-kami') }}" class="nav-mobile-link {{ request()->is('hubungi-kami*') ? 'active' : '' }}">Hubungi Kami</a>
             <div style="padding: 12px 24px 4px;">
-                <a href="{{ url('/kunjungan') }}" class="btn-otsuka w-100 text-center d-block">reservasi kunjungan</a>
+                <a href="{{ url('/kunjungan') }}" class="btn-otsuka w-100 text-center d-block">Reservasi Kunjungan</a>
             </div>
         </div>
     </div>
@@ -385,31 +417,31 @@
                         <img src="{{ asset('assets/img/logo-gubuk.png') }}" alt="Logo Gubuk Sayur" onerror="this.src='{{ asset('assets/img/logo-gubuk.png') }}'">
                     </div>
                     <p class="footer-tagline">
-                        pusat pelatihan pertanian modern berbasis hidroponik di lumajang, jawa timur.
+                        Pertanian modern berbasis hidroponik di Lumajang, Jawa Timur.
                     </p>
                 </div>
 
                 <div class="col-6 col-lg-2">
                     <div class="footer-col-title">Navigasi</div>
-                    <a href="{{ url('/') }}" class="footer-link">beranda</a>
-                    <a href="{{ url('/pelatihan') }}" class="footer-link">pelatihan</a>
-                    <a href="{{ url('/kunjungan') }}" class="footer-link">kunjungan</a>
-                    <a href="{{ url('/kemitraan') }}" class="footer-link">kemitraan</a>
-                    <a href="{{ url('/hubungi-kami') }}" class="footer-link">hubungi kami</a>
+                    <a href="{{ url('/') }}" class="footer-link">Beranda</a>
+                    <a href="{{ url('/pelatihan') }}" class="footer-link">Pelatihan</a>
+                    <a href="{{ url('/kunjungan') }}" class="footer-link">Kunjungan</a>
+                    <a href="{{ url('/kemitraan') }}" class="footer-link">Kemitraan</a>
+                    <a href="{{ url('/hubungi-kami') }}" class="footer-link">Hubungi Kami</a>
                 </div>
 
                 <div class="col-6 col-lg-2">
                     <div class="footer-col-title">Program</div>
-                    <a href="{{ url('/pelatihan') }}" class="footer-link">pelatihan hidroponik</a>
-                    <a href="{{ url('/kunjungan') }}" class="footer-link">kunjungan edukasi</a>
-                    <a href="{{ url('/kemitraan') }}" class="footer-link">kemitraan usaha</a>
+                    <a href="{{ url('/pelatihan') }}" class="footer-link">Pelatihan</a>
+                    <a href="{{ url('/kunjungan') }}" class="footer-link">Kunjungan edukasi</a>
+                    <a href="{{ url('/kemitraan') }}" class="footer-link">Kemitraan</a>
                 </div>
 
                 <div class="col-lg-4">
                     <div class="footer-col-title">Kontak</div>
                     <div class="footer-contact-item">
                         <div class="footer-contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div class="footer-contact-text">lumajang, jawa timur, indonesia</div>
+                        <div class="footer-contact-text">Lumajang, Jawa Timur, Indonesia</div>
                     </div>
                     <div class="footer-contact-item">
                         <div class="footer-contact-icon"><i class="fab fa-whatsapp"></i></div>
@@ -417,7 +449,7 @@
                     </div>
                     <div class="footer-contact-item">
                         <div class="footer-contact-icon"><i class="fas fa-envelope"></i></div>
-                        <div class="footer-contact-text">info@gubuksayur.id</div>
+                        <div class="footer-contact-text">gubuksayur1@gmail.com</div>
                     </div>
                 </div>
 
@@ -426,13 +458,20 @@
 
         <div class="footer-bottom">
             <div class="footer-copy">
-                © 2026 P4S Gubuk Sayur Lumajang. seluruh hak cipta dilindungi.
+                © 2026 P4S Gubuk Sayur Lumajang. Seluruh hak cipta dilindungi.
             </div>
-            <div class="footer-social">
-                <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://wa.me/6281217214839" class="social-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+            <div class="footer-right">
+                <a href="{{ url('/login') }}" class="footer-admin-btn">
+                    <i class="fas fa-lock" style="font-size: 0.65rem;"></i>
+                    Masuk sebagai Admin
+                </a>
+                <div class="footer-admin-sep"></div>
+                <div class="footer-social">
+                    <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://wa.me/6281217214839" class="social-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+                </div>
             </div>
         </div>
     </div>

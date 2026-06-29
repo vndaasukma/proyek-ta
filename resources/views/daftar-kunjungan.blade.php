@@ -20,7 +20,7 @@
 <section class="hero d-flex align-items-center" style="height: 40vh;">
     <div class="container text-center">
         <h1 class="fw-bold">Form Pengajuan Kunjungan</h1>
-        <p class="mt-2">Silakan isi data dengan lengkap</p>
+        <p class="mt-2">Silahkan isi data dengan lengkap</p>
     </div>
 </section>
 
@@ -32,7 +32,6 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
 
-                        <!-- TANGGAL DARI KALENDER -->
                         <p class="text-center mb-3">
                             Tanggal dipilih:
                             <strong id="tanggal"></strong>
@@ -44,7 +43,6 @@
                         </div>
                         @endif
 
-                        <!-- ALERT ERROR VALIDASI -->
                         @if($errors->any())
                             <div class="alert alert-danger">
                                 <ul class="mb-0">
@@ -56,13 +54,17 @@
                         @endif
 
 
-                        <!-- MOCKUP FORM (BELUM SUBMIT KE DB) -->
                         <form action="{{ url('/daftar-kunjungan') }}" method="POST">
                         @csrf
 
                         <div class="mb-3">
                             <label class="form-label">Nama Instansi / Pengunjung</label>
                             <input type="text" name="nama_instansi" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Jumlah Pengunjung</label>
+                            <input type="number" name="jumlah_pengunjung" class="form-control" min="1" placeholder="Contoh: 30" required>
                         </div>
 
                         <div class="mb-3">

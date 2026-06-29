@@ -69,7 +69,7 @@
         font-weight: 700; letter-spacing: -0.3px;
         line-height: 0.92; color: white;
         margin-bottom: 14px;
-        text-transform: lowercase;
+        text-transform: none;
     }
     .header-sub-kj {
         font-size: 0.95rem; font-weight: 300;
@@ -385,24 +385,18 @@
 </style>
 
 
-<!-- ═══════════════════════════════════════════════════════
-     HEADER
-     ═══════════════════════════════════════════════════════ -->
 <section class="header-kunjungan">
     <div class="container header-inner-kj">
         <div class="row">
             <div class="col-lg-7 text-white pb-5">
                 <div class="header-eyebrow">P4S Gubuk Sayur</div>
-                <h1 class="header-title-kj">kunjungan<br>edukatif.</h1>
-                <p class="header-sub-kj">pilih tanggal kunjungan untuk reservasi sesi bersama kami.</p>
+                <h1 class="header-title-kj">Kunjungan<br>Edukatif</h1>
+                <p class="header-sub-kj">Pilih tanggal kunjungan untuk reservasi sesi bersama kami.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════
-     NOTIFIKASI BERHASIL MELAYANG (TOAST INFORMATIF)
-     ═══════════════════════════════════════════════════════ -->
 @if(session('success'))
     <div class="toast-success-kj" id="successToast">
         <div class="toast-icon">
@@ -434,9 +428,6 @@
 @endif
 
 
-<!-- ═══════════════════════════════════════════════════════
-     MAIN CONTENT
-     ═══════════════════════════════════════════════════════ -->
 <div class="kunjungan-main">
     <div class="container pt-5">
 
@@ -452,7 +443,6 @@
 
         <div class="row g-5">
 
-            <!-- CALENDAR COLUMN -->
             <div class="col-lg-7">
                 <div class="calendar-container">
                     <div class="calendar-header">
@@ -491,7 +481,6 @@
                                 <span>{{ $day }}</span>
                                 <div class="dots">
                                     @for($s = 1; $s <= 3; $s++)
-                                        <!-- Jika tanggal dikunci admin, otomatis semua titik dot berubah warna menjadi merah (booked/penuh) -->
                                         <div class="dot {{ ($s <= $bookedCount || $isLockedByAdmin) ? 'booked' : 'available' }}"></div>
                                     @endfor
                                 </div>
@@ -512,7 +501,6 @@
                 </div>
             </div>
 
-            <!-- SESSION COLUMN -->
             <div class="col-lg-5">
                 <div class="session-section">
                     <p style="font-size:0.75rem;color:#6b7c74;margin-bottom:8px;font-family:'Inter',sans-serif;text-transform:uppercase;letter-spacing:0.08em;">Tanggal dipilih</p>
@@ -551,7 +539,6 @@
                         @endphp
 
                         <div class="col-12">
-                            <!-- Tambahkan class 'full' jika sesi di-booking atau sudah lewat waktu -->
                             <div class="session-card {{ (isset($bookedSessions[$num]) || $isSesiTidakTersedia) ? 'full' : '' }}">
 
                                 <div class="sesi-info">
@@ -595,9 +582,6 @@
 </div>
 
 
-<!-- ═══════════════════════════════════════════════════════
-     MODAL — TIDAK DIUBAH LOGIKANYA, HANYA STYLING
-     ═══════════════════════════════════════════════════════ -->
 <div class="modal fade" id="bookingModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -606,7 +590,7 @@
                 <button type="button" class="modal-close-btn" data-bs-dismiss="modal">✕</button>
             </div>
             <div class="modal-body-custom">
-                <form action="{{ route('kunjungan.store') }}" method="POST">
+                <form action="{{ route('kunjungan.store') }}" method="POST" id="formKunjungan">
                     @csrf
                     <input type="hidden" name="tanggal_kunjungan" id="modal_tanggal">
                     <input type="hidden" name="sesi" id="modal_sesi">
@@ -620,6 +604,12 @@
                             <label class="modal-label">Nama Instansi / Sekolah / Kelompok</label>
                             <input type="text" name="instansi" class="modal-input" placeholder="Contoh: SMK Negeri 1 Lumajang" required>
                         </div>
+                        
+                        <div class="col-12">
+                            <label class="modal-label">Jumlah Pengunjung</label>
+                            <input type="number" name="jumlah_pengunjung" class="modal-input" placeholder="Contoh: 30" min="1" required>
+                        </div>
+
                         <div class="col-md-6 pe-md-1">
                             <label class="modal-label">Nomor WhatsApp</label>
                             <input type="text" name="no_wa" class="modal-input" placeholder="081234567890" required>
@@ -634,7 +624,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-modal-submit">Kirim Permohonan Reservasi</button>
+                    <button type="submit" class="btn-modal-submit" id="btnSubmitKunjungan">Kirim Permohonan Reservasi</button>
                 </form>
             </div>
         </div>
@@ -648,5 +638,11 @@
         var myModal = new bootstrap.Modal(document.getElementById('bookingModal'));
         myModal.show();
     }
+
+    document.getElementById('formKunjungan').addEventListener('submit', function() {
+        var btn = document.getElementById('btnSubmitKunjungan');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Mengirim Permohonan...';
+    });
 </script>
 @endsection

@@ -41,7 +41,7 @@
             <div class="col-lg-6">
                 <div class="card card-registration">
                     <div class="header-registration">
-                        <h2 class="fw-bold text-lowercase">pendaftaran pelatihan.</h2>
+                        <h2 class="fw-bold text-none">Formulir Pendaftaran Pelatihan</h2>
                         <p class="mb-0 opacity-75">{{ $pelatihan->nama_pelatihan }}</p>
                     </div>
                     <div class="card-body p-5">
@@ -52,21 +52,21 @@
                             <input type="hidden" name="total_harga" value="{{ $pelatihan->harga }}">
                             
                             <div class="mb-3">
-                                <label class="fw-bold text-lowercase">nama lengkap</label>
+                                <label class="fw-bold text-none">Nama Lengkap</label>
                                 <input type="text" name="nama" class="form-control rounded-pill" required>
                             </div>
                             
                             <div class="mb-3">
-                                <label class="fw-bold text-lowercase">nomor whatsapp</label>
+                                <label class="fw-bold text-none">Nomor WhatsApp</label>
                                 <input type="text" name="no_hp" class="form-control rounded-pill" placeholder="08..." required>
                             </div>
 
                             <div class="mb-4">
-                                <label class="fw-bold text-lowercase">email</label>
+                                <label class="fw-bold text-none">Email</label>
                                 <input type="email" name="email" class="form-control rounded-pill" required>
                             </div>
 
-                            <button type="submit" class="btn-submit">kirim pendaftaran</button>
+                            <button type="submit" class="btn-submit">Kirim Pendaftaran</button>
                         </form>
                     </div>
                 </div>

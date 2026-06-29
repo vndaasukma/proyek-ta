@@ -3,7 +3,7 @@
 @section('content')
 @php
     $banner = \App\Models\Setting::where('key', 'hero_banner')->value('value') ?? 'p4s-hero.jpg';
-    $headline = \App\Models\Setting::where('key', 'hero_headline')->value('value') ?? 'inovasi tani hidroponik untuk masa depan.';
+    $headline = \App\Models\Setting::where('key', 'hero_headline')->value('value') ?? 'Inovasi Tani Hidroponik Bagi Masa Depan';
     $themeColor = \App\Models\Setting::where('key', 'theme_color')->value('value') ?? '#198754';
 @endphp
 
@@ -37,8 +37,8 @@
                 mengintegrasikan teknologi hidroponik modern dengan kearifan lokal untuk menciptakan kemandirian pangan desa yang cerdas.
             </p>
             <div class="d-flex gap-3">
-                <a href="/pelatihan" class="btn btn-otsuka btn-lg px-5 shadow">daftar pelatihan</a>
-                <a href="/kunjungan" class="btn btn-outline-light btn-lg rounded-pill px-5 fw-bold" style="text-transform: lowercase;">kunjungan</a>
+                <a href="/pelatihan" class="btn btn-otsuka btn-lg px-5 shadow">Daftar Pelatihan</a>
+                <a href="/kunjungan" class="btn btn-outline-light btn-lg rounded-pill px-5 fw-bold" style="text-transform: none;">Kunjungan</a>
             </div>
         </div>
     </div>

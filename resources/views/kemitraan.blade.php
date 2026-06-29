@@ -739,13 +739,13 @@
             <div class="col-lg-8">
                 <div class="hero-tag">Program Kemitraan Strategis</div>
                 <h1 class="gs-headline">
-                    kembangkan<br>potensi<br><span class="accent-word">pertanian</span><br>bersama kami.
+                    Kembangkan<br>Potensi<br><span class="accent-word">Pertanian</span><br>Bersama Kami.
                 </h1>
                 <p class="hero-desc">
-                    kami membuka ruang kolaborasi bagi instansi dan perusahaan untuk memajukan ekosistem pangan lokal yang modern dan berkelanjutan.
+                    Kami membuka ruang kolaborasi bagi instansi dan perusahaan untuk memajukan ekosistem pangan lokal yang modern dan berkelanjutan.
                 </p>
                 <a href="#form-daftar" class="btn-gs-primary">
-                    ajukan kerjasama
+                    Ajukan Kerjasama
                     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
@@ -753,11 +753,11 @@
 
                 <div class="hero-stats">
                     <div class="stat-chip">
-                        <div class="num">50+</div>
+                        <div class="num">10+</div>
                         <div class="lbl">Mitra Aktif</div>
                     </div>
                     <div class="stat-chip">
-                        <div class="num">3 Thn</div>
+                        <div class="num">5 Thn</div>
                         <div class="lbl">Berpengalaman</div>
                     </div>
                     <div class="stat-chip">
@@ -776,7 +776,7 @@
 <section class="section-kemitraan">
     <div class="container">
         <div class="section-label">Program Kolaborasi</div>
-        <h2 class="gs-title-dark" style="margin-bottom: 16px;">ruang kolaborasi<br>yang terbuka luas.</h2>
+        <h2 class="gs-title-dark" style="margin-bottom: 16px;">Ruang kolaborasi<br>yang terbuka luas.</h2>
         <p class="km-intro-text">
             P4S Gubuk Sayur membuka berbagai bentuk kemitraan strategis bagi institusi, perusahaan, mahasiswa, maupun individu yang ingin tumbuh bersama dalam ekosistem pertanian modern dan berkelanjutan.
         </p>
@@ -865,7 +865,7 @@
 <section class="section-timeline">
     <div class="container">
         <div class="section-label">Alur Kolaborasi</div>
-        <h2 class="gs-title-dark">tahapan kemitraan.</h2>
+        <h2 class="gs-title-dark">Tahapan Kemitraan.</h2>
 
         <div class="timeline-stepper">
             <div class="step-item">
@@ -880,7 +880,7 @@
                     <span class="step-icon">🔍</span>
                 </div>
                 <div class="step-title">Verifikasi Internal</div>
-                <div class="step-desc">Tim manajemen Gubuk Sayur meninjau dokumen untuk kesesuaian visi misi.</div>
+                <div class="step-desc">Tim manajemen Gubuk Sayur meninjau dokumen yang dikirim.</div>
             </div>
             <div class="step-item">
                 <div class="step-circle">
@@ -940,8 +940,8 @@
             <!-- FORM CARD -->
             <div class="col-lg-8">
                 <div class="form-card">
-                    <h2 class="form-title">formulir<br>kemitraan.</h2>
-                    <p class="form-subtitle">silakan lengkapi data di bawah ini untuk memulai kolaborasi.</p>
+                    <h2 class="form-title">Formulir<br>Kemitraan.</h2>
+                    <p class="form-subtitle">silahkan lengkapi data di bawah ini untuk memulai kolaborasi.</p>
 
                     @if($errors->any())
                         <div class="alert-gs-danger">
@@ -982,7 +982,7 @@
                         <p class="file-hint">Maksimal file 2MB · Format PDF</p>
 
                         <button type="submit" class="btn-gs-submit">
-                            kirim pengajuan sekarang
+                            Kirim Pengajuan sekarang
                             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
                             </svg>
@@ -1015,7 +1015,7 @@
                 <div class="modal-badge">Pengajuan Berhasil</div>
 
                 <!-- Headline -->
-                <h4>kemitraan<br>siap diproses.</h4>
+                <h4>Kemitraan<br>siap diproses.</h4>
 
                 <!-- Divider -->
                 <div class="modal-divider"></div>
@@ -1043,7 +1043,7 @@
 
                 <!-- Close button -->
                 <button type="button" class="btn-modal-close" data-bs-dismiss="modal">
-                    mengerti, tutup
+                    Mengerti, tutup
                     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>

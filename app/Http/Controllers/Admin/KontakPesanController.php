@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class KontakPesanController extends Controller
 {
     /**
-     * Menerima dan menyimpan pesan dari form "Hubungi Kami"
+     * Menerima dan menyimpan pesan dari form "Hubungi Kami" (Frontend)
      */
     public function store(Request $request)
     {
@@ -30,7 +30,7 @@ class KontakPesanController extends Controller
             'pesan'  => $request->pesan,
         ]);
 
-        // 3. Balik lagi ke halaman kontak dengan pesan sukses
+        // 3. Kembali ke halaman kontak dengan pesan sukses
         return back()->with('success', 'Pesan Anda telah terkirim! Admin akan segera menghubungi Anda.');
     }
 
@@ -40,6 +40,7 @@ class KontakPesanController extends Controller
     public function index()
     {
         $pesans = KontakPesan::latest()->get();
+        
         return view('admin.pesan.index', compact('pesans'));
     }
 
@@ -51,6 +52,7 @@ class KontakPesanController extends Controller
         $pesan = KontakPesan::findOrFail($id);
         $pesan->delete();
 
-        return back()->with('success', 'Pesan berhasil dihapus!');
+        // Gunakan redirect ke route index agar tidak terkena 404
+        return redirect()->route('admin.pesan.index')->with('success', 'Pesan berhasil dihapus!');
     }
 }

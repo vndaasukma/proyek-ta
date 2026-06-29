@@ -28,7 +28,7 @@
 
     .gs-headline { 
         font-weight: 900; font-size: clamp(3rem, 6vw, 5rem); letter-spacing: -3px; 
-        line-height: 0.9; text-transform: lowercase;
+        line-height: 0.9; text-transform: none;
     }
 
     /* --- MAIN CONTENT --- */
@@ -56,7 +56,7 @@
         flex-shrink: 0;
     }
 
-    .info-text h6 { font-weight: 800; text-transform: lowercase; margin-bottom: 5px; color: var(--gs-dark); }
+    .info-text h6 { font-weight: 800; text-transform: none; margin-bottom: 5px; color: var(--gs-dark); }
     .info-text p { color: #64748b; font-size: 0.95rem; margin-bottom: 0; line-height: 1.6; }
 
     .mini-map {
@@ -86,7 +86,7 @@
     .btn-gs-submit {
         background: var(--gs-green); color: white; border: none;
         width: 100%; padding: 20px; border-radius: 20px; font-weight: 900;
-        text-transform: lowercase; font-size: 1.1rem; transition: 0.4s;
+        text-transform: none; font-size: 1.1rem; transition: 0.4s;
         box-shadow: 0 20px 40px rgba(25, 135, 84, 0.2);
     }
 
@@ -100,8 +100,8 @@
 
 <section class="contact-hero">
     <div class="container text-center">
-        <h1 class="gs-headline mb-4" data-aos="fade-up">hubungi kami.</h1>
-        <p class="opacity-50 fs-5" data-aos="fade-up" data-aos-delay="100">kami siap mendengar ide, kritik, dan saran kolaborasi anda.</p>
+        <h1 class="gs-headline mb-4" data-aos="fade-up">Hubungi Kami.</h1>
+        <p class="opacity-50 fs-5" data-aos="fade-up" data-aos-delay="100">Kami siap mendengar ide, kritik, dan saran anda.</p>
     </div>
 </section>
 
@@ -114,16 +114,16 @@
                 <div class="contact-item">
                     <div class="icon-box"><i class="fas fa-map-marker-alt"></i></div>
                     <div class="info-text">
-                        <h6>lokasi kebun</h6>
-                        <p>dusun krajan, desa kedawung,<br>kec. padang, lumajang.</p>
+                        <h6> Lokasi Kebun </h6>
+                        <p>Dusun krajan, Desa kedawung,<br>Kec. Padang, Lumajang.</p>
                     </div>
                 </div>
 
                 <div class="contact-item">
                     <div class="icon-box"><i class="fas fa-phone-alt"></i></div>
                     <div class="info-text">
-                        <h6>kontak aktif</h6>
-                        <p>whatsapp: +62 812 1721 4839<br>email: halo@gubuksayur.com</p>
+                        <h6> Kontak Aktif </h6>
+                        <p>Whatsapp: +62 812 1721 4839<br>Email: gubuksayur1@gmail.com</p>
                     </div>
                 </div>
 
@@ -158,7 +158,7 @@
 
                     <div class="mb-4">
                         <label class="form-label-gs">alamat email</label>
-                        <input type="email" name="email" class="input-gs" placeholder="email@contoh.com" required>
+                        <input type="email" name="email" class="input-gs" placeholder="sedayu@gmail.com" required>
                     </div>
 
                     <div class="mb-4">
