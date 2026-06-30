@@ -247,15 +247,21 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::patch('/reviews/{id}/approve', [AdminReviewController::class, 'approve'])->name('admin.reviews.approve');
     Route::delete('/reviews/{id}', [AdminReviewController::class, 'destroy'])->name('admin.reviews.destroy');
 
+    // GALERI
     Route::get('/galeri', [GaleriController::class, 'index'])->name('admin.galeri.index');
     Route::post('/galeri', [GaleriController::class, 'store'])->name('admin.galeri.store');
+    Route::put('/galeri/{id}', [GaleriController::class, 'update'])->name('admin.galeri.update');
     Route::delete('/galeri/{id}', [GaleriController::class, 'destroy'])->name('admin.galeri.destroy');
 
+    // PRODUCT (PROSES UPDATE / PUT BERHASIL DISELARASKAN)
     Route::get('/product', [ProdukController::class, 'index'])->name('admin.product.index');
     Route::post('/product', [ProdukController::class, 'store'])->name('admin.product.store');
     // FIXED: Memperbaiki penamaan route destroy product agar selaras dengan folder view
     Route::delete('/product/{id}', [ProdukController::class, 'destroy'])->name('admin.product.destroy');
+    // SISIPKAN BARIS BARU INI UNTUK UPDATE DATA:
+    Route::put('/product/{id}', [ProdukController::class, 'update'])->name('admin.product.update');
 
+    // FASILITAS
     Route::get('/fasilitas', [FasilitasController::class, 'index'])->name('admin.fasilitas.index');
     Route::post('/fasilitas', [FasilitasController::class, 'store'])->name('admin.fasilitas.store');
     Route::delete('/fasilitas/{id}', [FasilitasController::class, 'destroy'])->name('admin.fasilitas.destroy');

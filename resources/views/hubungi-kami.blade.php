@@ -100,7 +100,7 @@
 
 <section class="contact-hero">
     <div class="container text-center">
-        <h1 class="gs-headline mb-4" data-aos="fade-up">Hubungi Kami.</h1>
+        <h1 class="gs-headline mb-4" data-aos="fade-up">Hubungi Kami</h1>
         <p class="opacity-50 fs-5" data-aos="fade-up" data-aos-delay="100">Kami siap mendengar ide, kritik, dan saran anda.</p>
     </div>
 </section>
@@ -172,7 +172,7 @@
                     </div>
 
                     <button type="submit" class="btn-gs-submit">
-                        kirim pesan sekarang <i class="fas fa-paper-plane ms-2"></i>
+                        Kirim pesan sekarang <i class="fas fa-paper-plane ms-2"></i>
                     </button>
                 </form>
             </div>

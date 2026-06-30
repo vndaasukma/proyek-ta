@@ -4,7 +4,7 @@
 <div class="container-fluid py-4">
     <div class="card shadow border-0">
         <div class="card-header bg-white py-3">
-            <h5 class="m-0 font-weight-bold text-success" style="text-transform: lowercase;">moderasi review pelanggan</h5>
+            <h5 class="m-0 font-weight-bold text-success" style="text-transform: none;">Moderasi Review Alumni pelatihan</h5>
         </div>
         <div class="card-body">
             @if(session('success'))
@@ -17,25 +17,25 @@
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
                     <thead class="table-light">
-                        <tr class="text-lowercase">
-                            <th>nama</th>
-                            <th>pelatihan</th>
-                            <th>komentar</th>
-                            <th>status</th>
-                            <th class="text-center">aksi</th>
+                        <tr class="text-none">
+                            <th>Nama</th>
+                            <th>Pelatihan</th>
+                            <th>Komentar</th>
+                            <th>Status</th>
+                            <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($reviews as $rev)
                         <tr>
-                            <td class="text-lowercase">{{ $rev->nama }}</td>
-                            <td class="text-lowercase"><span class="badge bg-secondary">{{ $rev->pelatihan }}</span></td>
+                            <td class="text-none">{{ $rev->nama }}</td>
+                            <td class="text-none"><span class="badge bg-secondary">{{ $rev->pelatihan }}</span></td>
                             <td class="small">{{ $rev->komentar }}</td>
                             <td>
                                 @if($rev->status == 'pending')
-                                    <span class="badge bg-warning text-dark text-lowercase">pending</span>
+                                    <span class="badge bg-warning text-dark text-none">pending</span>
                                 @else
-                                    <span class="badge bg-success text-lowercase">disetujui</span>
+                                    <span class="badge bg-success text-none">disetujui</span>
                                 @endif
                             </td>
                             <td class="text-center">

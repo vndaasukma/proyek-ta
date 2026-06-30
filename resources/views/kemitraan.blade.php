@@ -737,9 +737,9 @@
     <div class="container hero-content py-5">
         <div class="row align-items-center g-5">
             <div class="col-lg-8">
-                <div class="hero-tag">Program Kemitraan Strategis</div>
+                <div class="hero-tag">Program Kemitraan</div>
                 <h1 class="gs-headline">
-                    Kembangkan<br>Potensi<br><span class="accent-word">Pertanian</span><br>Bersama Kami.
+                    Kembangkan<br>Potensi<br><span class="accent-word">Pertanian</span><br>Bersama Kami
                 </h1>
                 <p class="hero-desc">
                     Kami membuka ruang kolaborasi bagi instansi dan perusahaan untuk memajukan ekosistem pangan lokal yang modern dan berkelanjutan.
@@ -911,7 +911,7 @@
             <div class="col-lg-4">
                 <div class="info-panel">
                     <p class="section-label" style="color: var(--gs-accent);">Mulai Berkolaborasi</p>
-                    <h3 class="info-panel-title">hubungi kami & mulai perjalanan bersama.</h3>
+                    <h3 class="info-panel-title">Hubungi Kami & Mulai Perjalanan Bersama.</h3>
 
                     <div class="info-item">
                         <div class="info-icon">⏱</div>
@@ -941,7 +941,7 @@
             <div class="col-lg-8">
                 <div class="form-card">
                     <h2 class="form-title">Formulir<br>Kemitraan.</h2>
-                    <p class="form-subtitle">silahkan lengkapi data di bawah ini untuk memulai kolaborasi.</p>
+                    <p class="form-subtitle">Silahkan lengkapi data di bawah ini untuk memulai kolaborasi.</p>
 
                     @if($errors->any())
                         <div class="alert-gs-danger">

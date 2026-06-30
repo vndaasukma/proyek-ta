@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6 border-end">
+                    <div class="col-md-5 border-end">
                         <h5 class="font-weight-bold text-success border-bottom pb-2 mb-3">2. Kotak Visi</h5>
                         <div class="mb-3">
                             <label class="form-label">Judul Visi</label>
@@ -45,18 +45,28 @@
                         </div>
                         <div class="mb-4">
                             <label class="form-label">Deskripsi Visi</label>
-                            <textarea name="visi_deskripsi" class="form-control" rows="2" required>{{ $profil->visi_deskripsi }}</textarea>
+                            <textarea name="visi_deskripsi" class="form-control" rows="4" required>{{ $profil->visi_deskripsi }}</textarea>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <h5 class="font-weight-bold text-info border-bottom pb-2 mb-3">3. Kotak Edukasi</h5>
-                        <div class="mb-3">
-                            <label class="form-label">Judul Edukasi</label>
-                            <input type="text" name="edukasi_judul" class="form-control" value="{{ $profil->edukasi_judul }}" required>
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label">Deskripsi Edukasi</label>
-                            <textarea name="edukasi_deskripsi" class="form-control" rows="2" required>{{ $profil->edukasi_deskripsi }}</textarea>
+                    <div class="col-md-7">
+                        <h5 class="font-weight-bold text-info border-bottom pb-2 mb-3">3. Kotak Misi (4 Poin)</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Misi 01</label>
+                                <textarea name="misi_1" class="form-control" rows="2" required>{{ $profil->misi_1 }}</textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Misi 02</label>
+                                <textarea name="misi_2" class="form-control" rows="2" required>{{ $profil->misi_2 }}</textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Misi 03</label>
+                                <textarea name="misi_3" class="form-control" rows="2" required>{{ $profil->misi_3 }}</textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Misi 04</label>
+                                <textarea name="misi_4" class="form-control" rows="2" required>{{ $profil->misi_4 }}</textarea>
+                            </div>
                         </div>
                     </div>
                 </div>

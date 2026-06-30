@@ -348,7 +348,7 @@
 <section class="header-pelatihan">
     <div class="container header-inner">
         <div class="header-tag">P4S Gubuk Sayur Lumajang</div>
-        <h1 class="title-header">Program<br>Pelatihan.</h1>
+        <h1 class="title-header">Program<br>Pelatihan</h1>
         <p class="header-sub">Tingkatkan Keahlian Pertanian Modern Anda Bersama Mentor Berpengalaman.</p>
     </div>
 </section>

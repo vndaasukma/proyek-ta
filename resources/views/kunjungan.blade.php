@@ -33,6 +33,15 @@
         position: relative; overflow: hidden;
         font-family: 'Inter', sans-serif;
     }
+    /* Efek Embos Tulisan Kunjungan */
+    .header-kunjungan::before {
+        content: 'kunjungan';
+        position: absolute; bottom: -20px; right: -20px;
+        font-family: 'Inter', sans-serif;
+        font-size: 18vw; font-weight: 700;
+        color: rgba(255,255,255,0.04);
+        line-height: 1; pointer-events: none;
+    }
     .header-kunjungan::after {
         content: '';
         position: absolute; inset: 0;

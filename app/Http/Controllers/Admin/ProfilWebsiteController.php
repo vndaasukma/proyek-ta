@@ -11,17 +11,19 @@ class ProfilWebsiteController extends Controller
 {
     public function index()
     {
-        // Ambil data pertama. Jika tabel masih kosong, buat data default.
+        // Ambil data pertama. Jika tabel masih kosong, buat 1 baris kosong sebagai wadah.
         $profil = ProfilWebsite::first();
-        
+
         if (!$profil) {
             $profil = ProfilWebsite::create([
-                'judul' => 'mengenal gubuk sayur.',
-                'deskripsi' => 'kami berfokus pada efisiensi lahan melalui teknologi hidroponik modern untuk menciptakan ekosistem pertanian yang bersih dan cerdas.',
-                'visi_judul' => 'VISI MODERN',
-                'visi_deskripsi' => 'Pertanian Berbasis Data dan Sistem Nutrisi Presisi.',
-                'edukasi_judul' => 'EDUKASI',
-                'edukasi_deskripsi' => 'Kurikulum aplikatif bagi siswa dan petani milenial.'
+                'judul'           => '',
+                'deskripsi'       => '',
+                'visi_judul'      => '',
+                'visi_deskripsi'  => '',
+                'misi_1'          => '',
+                'misi_2'          => '',
+                'misi_3'          => '',
+                'misi_4'          => '',
             ]);
         }
 
@@ -35,8 +37,10 @@ class ProfilWebsiteController extends Controller
             'deskripsi' => 'required|string',
             'visi_judul' => 'required|string|max:255',
             'visi_deskripsi' => 'required|string',
-            'edukasi_judul' => 'required|string|max:255',
-            'edukasi_deskripsi' => 'required|string',
+            'misi_1' => 'required|string',
+            'misi_2' => 'required|string',
+            'misi_3' => 'required|string',
+            'misi_4' => 'required|string',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
